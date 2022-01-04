@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const cities = require('./cities');
 const { places, descriptors } = require('./seedHelpers');
 const Campground = require('../models/campground');
+const https = require('https')
 
 if (process.env.NODE_ENV !== "production") {
   require('dotenv').config();
@@ -25,15 +26,43 @@ db.once("open", () => {
 
 const sample = array => array[Math.floor(Math.random() * array.length)];
 
+const getImage = () => {
+  const images = ["img_23_q7hweu",
+  "img_17_vox1u5",
+  "img_21_wz5nfk",
+  "img_22_bbviyb",
+  "img_19_qolmk1",
+  "img_18_lhuvee",
+  "img_20_esa7uq",
+  "img_11_tr3ml6",
+  "img_4_fmvuq1",
+  "img_13_dyusve",
+  "img_16_csgdki",
+  "img_14_oe7ibn",
+  "img_10_rvulaq",
+  "img_15_gpydeh",
+  "img_5_temdlz",
+  "img_12_p6x076",
+  "img_8_aa47fw",
+  "img_2_yoc6kc",
+  "img_9_fzabd1",
+  "img_6_skubgl",
+  "img_7_x5ouxs",
+  "img_3_lj5vcr",
+  "img_1_kmjaop"]
+  const random = Math.floor(Math.random() * images.length);
+  const url = ` https://res.cloudinary.com/samkiran/image/upload/v1641227861/${images[random]}.jpg`;
+  console.log(url);
+  return url;
+}
 
 const seedDB = async () => {
-    await Campground.deleteMany({});
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 6; i++) {
         const random1000 = Math.floor(Math.random() * 1000);
         const price = Math.floor(Math.random() * 20) + 10;
         const camp = new Campground({
             //YOUR USER ID
-            author: '5f5c330c2cd79d538f2c66d9',
+            author: '61d3d020c9c4d100165be752',
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
             description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam dolores vero perferendis laudantium, consequuntur voluptatibus nulla architecto, sit soluta esse iure sed labore ipsam a cum nihil atque molestiae deserunt!',
@@ -47,12 +76,12 @@ const seedDB = async () => {
             },
             images: [
                 {
-                    url: 'https://source.unsplash.com/random/?campground',
-                    filename: 'yelpcamp'
+                    url: getImage(),
+                    filename: 'rate_campground'
                 },
                 {
-                    url: 'https://source.unsplash.com/random/?campground',
-                    filename: 'YelpCamp'
+                    url: getImage(),
+                    filename: 'rate_campground'
                 }
             ]
         })
